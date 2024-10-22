@@ -3,6 +3,7 @@ import { DashboardPage } from "../pages/Dasboard";
 import { ReportPage } from "../pages/Report";
 import { ProfilePage } from "../pages/Profile";
 import { ProjectsPage } from "../pages/ProjectsPage";
+import { ProcurementPage } from "../pages/Procurement/ProcurementPage";
 import { RiBarChartBoxLine, RiHome2Line, RiUserLine } from "react-icons/ri";
 import { MainLayout } from "../layouts/MainLayout";
 
@@ -26,6 +27,10 @@ export const app = {
         {
           path: "/profile",
           element: <ProfilePage />,
+        },
+        {
+          path: "/procurement/:id",
+          element: <ProcurementPage />,
         },
       ],
     },
