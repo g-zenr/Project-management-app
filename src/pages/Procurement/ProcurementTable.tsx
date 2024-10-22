@@ -1,34 +1,25 @@
 import React from "react";
 
-interface Procurement {
-  category: string;
-  expenseType: string;
-  cost: number;
-}
-
 interface MonthlyBudget {
   month: string;
   amount: number;
   forecast: number;
 }
 
-interface ProcurementTableProps {
-  project: {
-    procurement: Procurement[];
-    monthlyBudget: MonthlyBudget[];
-    budget: number;
-  };
+interface TableData {
+  budget: number;
+  forecast: number;
+  totalBudget: number;
+  monthlyBudget: MonthlyBudget[];
+  category: string;
+  expenseType: string;
 }
 
-const ProcurementTable: React.FC<ProcurementTableProps> = ({ project }) => {
-  const { procurement = [], monthlyBudget = [], budget } = project;
+interface ProcurementTableProps {
+  tableData: TableData[]; // Expecting an array of TableData
+}
 
-  // Calculate total procurement cost
-  const totalProcurementCost = procurement.reduce(
-    (total, item) => total + item.cost,
-    0
-  );
-
+const ProcurementTable: React.FC<ProcurementTableProps> = ({ tableData }) => {
   return (
     <div className="bg-white shadow-md rounded-lg p-4 mb-4">
       <h2 className="font-semibold text-lg">Budget and Procurement Details</h2>
@@ -45,50 +36,52 @@ const ProcurementTable: React.FC<ProcurementTableProps> = ({ project }) => {
               Totals
             </th>
             {/* Month Headers */}
-            {monthlyBudget.map((budgetItem, index) => (
-              <th
-                key={index}
-                colSpan={2}
-                className="border border-gray-300 p-2 text-center"
-              >
-                {budgetItem.month}
-              </th>
-            ))}
+            {tableData.length > 0 &&
+              tableData[0].monthlyBudget.map((budgetItem, index) => (
+                <th
+                  key={index}
+                  colSpan={2}
+                  className="border border-gray-300 p-2 text-center"
+                >
+                  {budgetItem.month}
+                </th>
+              ))}
           </tr>
           <tr className="bg-gray-100">
             {/* Budget and Forecast Headers */}
-            {monthlyBudget.map((_, index) => (
-              <React.Fragment key={index}>
-                <th className="border border-gray-300 p-2">Budget</th>
-                <th className="border border-gray-300 p-2">Forecast</th>
-              </React.Fragment>
-            ))}
+            {tableData.length > 0 &&
+              tableData[0].monthlyBudget.map((_, index) => (
+                <React.Fragment key={index}>
+                  <th className="border border-gray-300 p-2">Budget</th>
+                  <th className="border border-gray-300 p-2">Forecast</th>
+                </React.Fragment>
+              ))}
           </tr>
         </thead>
         <tbody>
-          {monthlyBudget.length > 0 ? (
-            <tr>
-              <td className="border border-gray-300 p-2">
-                {procurement.length > 0 ? procurement[0].category : "N/A"}
-              </td>
-              <td className="border border-gray-300 p-2">
-                {procurement.length > 0 ? procurement[0].expenseType : "N/A"}
-              </td>
-              <td className="border border-gray-300 p-2">
-                ${totalProcurementCost}
-              </td>
-              {/* Iterate through monthly budget data */}
-              {monthlyBudget.map((budgetItem, index) => (
-                <React.Fragment key={index}>
-                  <td className="border border-gray-300 p-2">
-                    ${budgetItem.amount}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    ${budgetItem.forecast}
-                  </td>
-                </React.Fragment>
-              ))}
-            </tr>
+          {tableData.length > 0 ? (
+            tableData.map((data, index) => (
+              <tr key={index}>
+                <td className="border border-gray-300 p-2">{data.category}</td>
+                <td className="border border-gray-300 p-2">
+                  {data.expenseType}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  ₱{data.totalBudget}
+                </td>
+                {/* Iterate through monthly budget data */}
+                {data.monthlyBudget.map((budgetItem, index) => (
+                  <React.Fragment key={index}>
+                    <td className="border border-gray-300 p-2">
+                      ₱{budgetItem.amount}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      ₱{budgetItem.forecast}
+                    </td>
+                  </React.Fragment>
+                ))}
+              </tr>
+            ))
           ) : (
             <tr>
               <td
