@@ -1,13 +1,5 @@
 import React from "react";
-
-interface TagProps {
-  tags: string[];
-}
-
-interface Project {
-  description: string;
-  tags: string[];
-}
+import { Project } from "../../types/common";
 
 const ProjectDescription: React.FC<{ project: Project }> = ({ project }) => (
   <div className="bg-white shadow-md rounded-lg p-4 mb-4">
@@ -18,7 +10,7 @@ const ProjectDescription: React.FC<{ project: Project }> = ({ project }) => (
   </div>
 );
 
-const Tags: React.FC<TagProps> = ({ tags }) => (
+const Tags: React.FC<{ tags: string[] }> = ({ tags }) => (
   <div className="mt-2">
     {tags.map((tag, index) => (
       <span

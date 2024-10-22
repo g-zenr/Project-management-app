@@ -1,22 +1,8 @@
 import React from "react";
-
-interface MonthlyBudget {
-  month: string;
-  amount: number;
-  forecast: number;
-}
-
-interface TableData {
-  budget: number;
-  forecast: number;
-  totalBudget: number;
-  monthlyBudget: MonthlyBudget[];
-  category: string;
-  expenseType: string;
-}
+import { TableData } from "../../types/common"; 
 
 interface ProcurementTableProps {
-  tableData: TableData[]; // Expecting an array of TableData
+  tableData: TableData[]; 
 }
 
 const ProcurementTable: React.FC<ProcurementTableProps> = ({ tableData }) => {

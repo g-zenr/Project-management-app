@@ -2,42 +2,7 @@ import { useLocation } from "react-router-dom";
 import { ProcurementTable } from "./ProcurementTable";
 import { ProcurementItemsTable } from "./ProcurementItemsTable";
 import { ProjectDescription } from "./ProjectDescription";
-
-interface MonthlyBudget {
-  month: string;
-  year: number;
-  amount: number;
-  forecast: number;
-}
-
-interface Procurement {
-  id: string;
-  projectId: string;
-  item: string;
-  cost: number;
-  date: string;
-  status: "Pending" | "Approved" | "Rejected";
-}
-
-interface TableData {
-  budget: number;
-  forecast: number;
-  totalBudget: number;
-  monthlyBudget: MonthlyBudget[];
-  category: string;
-  expenseType: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  date: string;
-  status: "In Progress" | "Completed" | "Pending";
-  tableData: TableData[]; 
-  procurement: Procurement[];
-  tags: string[];
-}
+import { Project } from "../../types/common"; 
 
 const ProcurementPage = () => {
   const location = useLocation();
@@ -53,7 +18,7 @@ const ProcurementPage = () => {
         Procurement Details for {project.name}
       </h1>
       <ProjectDescription project={project} />
-      <ProcurementTable tableData={project.tableData} />{" "}
+      <ProcurementTable tableData={project.tableData} />
       <ProcurementItemsTable procurement={project.procurement} />
     </div>
   );

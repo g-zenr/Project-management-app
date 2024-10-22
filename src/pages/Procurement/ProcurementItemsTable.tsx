@@ -1,12 +1,5 @@
 import React from "react";
-
-interface Procurement {
-  id: string;
-  item: string;
-  cost: number;
-  date: string;
-  status: string;
-}
+import { Procurement } from "../../types/common";
 
 interface ProcurementItemsTableProps {
   procurement: Procurement[];
