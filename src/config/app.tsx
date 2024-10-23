@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import DashboardPage from "../pages/Dasboard";
-import { ReportPage } from "../pages/Report";
+import ReportPage from "../pages/Report";
 import { ProfilePage } from "../pages/Profile";
 import { ProjectsPage } from "../pages/ProjectsPage";
 import { ProcurementPage } from "../pages/Procurement/ProcurementPage";
