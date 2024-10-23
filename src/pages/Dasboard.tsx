@@ -1,107 +1,113 @@
 import React from "react";
-import { mockProjects, Project } from "../mocks/projects";
+import { mockDashboardData, DashboardData } from "../mocks/dashboardMockData";
 import PieChart from "../components/PieChart";
-import BarChart from "../components/BarChart";
 import DonutChart from "../components/DonutChart";
-import ProcurementLineChart from "../components/ProcurementLineChart";
+import LineChart from "../components/LineChart";
+import BarChart from "../components/BarChart";
+import SummaryCard from "../cards/SummaryCard";
 
 const DashboardPage: React.FC = () => {
-  const projects: Project[] = mockProjects;
-
-  const totalProjects = projects.length;
-  const inProgress = projects.filter((p) => p.status === "In Progress").length;
-  const completed = projects.filter((p) => p.status === "Completed").length;
-  const pending = projects.filter((p) => p.status === "Pending").length;
-
-  const totalBudget = projects.reduce(
-    (acc, project) =>
-      acc + project.tableData.reduce((sum, data) => sum + data.totalBudget, 0),
-    0
-  );
-
-  const totalSpent = projects.reduce(
-    (acc, project) =>
-      acc + project.procurement.reduce((sum, item) => sum + item.cost, 0),
-    0
-  );
-
-  const remainingBudget = totalBudget - totalSpent;
-
-  const allProcurementItems = projects.flatMap(
-    (project) => project.procurement
-  );
+  const dashboardData: DashboardData = mockDashboardData;
 
   return (
-    <div className="dashboard p-5">
-      <h1 className="text-2xl font-bold mb-5">Project Management Dashboard</h1>
+    <div className="dashboard p-5" style={{ backgroundColor: "#fafafa" }}>
+      <h1 className="text-3xl font-bold mb-6 text-[#0f77be]">
+        Project Management Dashboard
+      </h1>
 
-      <div className="summary mb-5 p-4 border rounded shadow">
-        <h2 className="text-xl font-semibold mb-3">Overall Project Overview</h2>
+      <div className="summary mb-5 p-4 border border-gray-300 rounded shadow-md bg-white">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          Overall Project Overview
+        </h2>
 
-        <div className="grid grid-cols-4 gap-4">
-          <div className="p-2 border rounded bg-blue-100">
-            <h3 className="text-lg font-semibold">Total Projects</h3>
-            <p>{totalProjects}</p>
-          </div>
-          <div className="p-2 border rounded bg-green-100">
-            <h3 className="text-lg font-semibold">In Progress</h3>
-            <p>{inProgress}</p>
-          </div>
-          <div className="p-2 border rounded bg-yellow-100">
-            <h3 className="text-lg font-semibold">Completed</h3>
-            <p>{completed}</p>
-          </div>
-          <div className="p-2 border rounded bg-red-100">
-            <h3 className="text-lg font-semibold">Pending</h3>
-            <p>{pending}</p>
-          </div>
+        <div className="grid grid-cols-4 gap-6">
+          <SummaryCard
+            title="Total Projects"
+            value={dashboardData.totalProjects}
+            bgColor="bg-white"
+          />
+          <SummaryCard
+            title="In Progress"
+            value={dashboardData.inProgress}
+            bgColor="bg-white"
+          />
+          <SummaryCard
+            title="Completed"
+            value={dashboardData.completed}
+            bgColor="bg-white"
+          />
+          <SummaryCard
+            title="Pending"
+            value={dashboardData.pending}
+            bgColor="bg-white"
+          />
         </div>
       </div>
 
-      {/* Charts Grid Layout */}
       <div className="flex flex-col w-full">
-        {/* First row: Bar Graph and Pie Chart */}
-        <div className="flex w-full mb-8">
-          {" "}
-          {/* Increased margin-bottom for more space */}
-          <div className="w-[70%] h-97">
-            {" "}
-            <h2 className="text-lg font-semibold">Budget vs Actual Spend</h2>
-            <BarChart
-              totalBudget={totalBudget}
-              totalSpent={totalSpent}
-              procurementItems={allProcurementItems}
+        {/* Top Row: Procurement Line Chart and Donut Chart */}
+        <div className="flex w-full mb-10 gap-10">
+          <div className="w-[70%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Budget vs Actual Spend
+            </h2>
+            <LineChart
+              data={{
+                labels: dashboardData.procurementItems.map((item) => item.date),
+                values: dashboardData.procurementItems.map((item) => item.cost),
+              }}
+              label="Procurement Costs Over Time"
+              borderColor="#0f77be"
             />
           </div>
-          <div className="w-[30%] h-97">
-            {" "}
-            <h2 className="text-lg font-semibold">
-              Budget Overview (Donut Chart)
+          <div className="w-[30%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Budget Overview
             </h2>
             <DonutChart
-              totalBudget={totalBudget}
-              totalSpent={totalSpent}
-              remainingBudget={remainingBudget}
+              data={{
+                values: [
+                  dashboardData.totalSpent,
+                  dashboardData.remainingBudget,
+                ],
+              }}
+              label="Budget Overview"
+              backgroundColor={["#0f77be", "#d1d1d1"]}
             />
           </div>
         </div>
 
-        {/* Second row: Bar Graph and Pie Chart */}
-        <div className="flex w-full">
-          <div className="w-[70%] h-97">
-            {" "}
-            {/* Increased height */}
-            <h2 className="text-lg font-semibold">
-              Procurement Costs Over Time
+        {/* Bottom Row: Bar Chart and Pie Chart */}
+        <div className="flex w-full gap-10">
+          <div className="w-[70%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Budget vs Costs
             </h2>
-            <ProcurementLineChart procurementItems={allProcurementItems} />
+            <BarChart
+              labels={dashboardData.procurementItems.map((item) => item.item)}
+              data={[
+                dashboardData.procurementItems.map((item) => item.cost),
+                Array(dashboardData.procurementItems.length).fill(
+                  dashboardData.totalBudget /
+                    dashboardData.procurementItems.length
+                ),
+              ]}
+              labelsDataset={["Cost", "Budget"]}
+              colors={["#0f77be", "#d1d1d1"]}
+            />
           </div>
-          <div className="w-[30%] h-97">
-            {" "}
-            <h2 className="text-lg font-semibold">
+          <div className="w-[30%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Project Progress Breakdown
             </h2>
-            <PieChart projects={projects} />
+            <PieChart
+              data={{
+                labels: Object.keys(dashboardData.procurementCounts),
+                values: Object.values(dashboardData.procurementCounts),
+              }}
+              label="Procurement Status Breakdown"
+              backgroundColor={["#0f77be", "#d1d1d1", "#b0b0b0"]}
+            />
           </div>
         </div>
       </div>

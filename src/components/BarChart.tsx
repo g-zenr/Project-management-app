@@ -5,34 +5,29 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 interface BarChartProps {
-  totalBudget: number;
-  totalSpent: number;
-  procurementItems: { item: string; cost: number }[];
+  labels: string[]; // Labels for the x-axis
+  data: number[][]; // Array of data arrays for each dataset
+  labelsDataset: string[]; // Labels for each dataset
+  colors: string[]; // Colors for each dataset
 }
 
 const BarChart: React.FC<BarChartProps> = ({
-  totalBudget,
-  totalSpent,
-  procurementItems,
+  labels,
+  data,
+  labelsDataset,
+  colors,
 }) => {
   const chartRef = useRef<Chart | null>(null);
 
-  const data = {
-    labels: procurementItems.map((item) => item.item),
-    datasets: [
-      {
-        label: "Cost",
-        data: procurementItems.map((item) => item.cost),
-        backgroundColor: "#36A2EB",
-      },
-      {
-        label: "Budget",
-        data: Array(procurementItems.length).fill(
-          totalBudget / procurementItems.length
-        ), // Average budget for comparison
-        backgroundColor: "#FF6384",
-      },
-    ],
+  const datasets = labelsDataset.map((label, index) => ({
+    label,
+    data: data[index],
+    backgroundColor: colors[index],
+  }));
+
+  const chartData = {
+    labels,
+    datasets,
   };
 
   useEffect(() => {
@@ -43,7 +38,7 @@ const BarChart: React.FC<BarChartProps> = ({
     };
   }, []);
 
-  return <Bar ref={chartRef} data={data} />;
+  return <Bar ref={chartRef} data={chartData} />;
 };
 
 export default BarChart;

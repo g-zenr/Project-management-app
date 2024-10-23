@@ -1,4 +1,3 @@
-// DonutChart.tsx
 import React, { useEffect, useRef } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -6,24 +5,25 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 interface DonutChartProps {
-  totalBudget: number;
-  totalSpent: number;
-  remainingBudget: number;
+  data: { values: number[] };
+  label: string;
+  backgroundColor: string[];
 }
 
 const DonutChart: React.FC<DonutChartProps> = ({
-  totalBudget,
-  totalSpent,
-  remainingBudget,
+  data,
+  label,
+  backgroundColor,
 }) => {
   const chartRef = useRef<Chart | null>(null);
 
-  const data = {
+  const chartData = {
     labels: ["Total Spent", "Remaining Budget"],
     datasets: [
       {
-        data: [totalSpent, remainingBudget],
-        backgroundColor: ["#FF6384", "#36A2EB"],
+        label,
+        data: data.values,
+        backgroundColor,
         hoverOffset: 4,
       },
     ],
@@ -37,7 +37,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
     };
   }, []);
 
-  return <Doughnut ref={chartRef} data={data} />;
+  return <Doughnut ref={chartRef} data={chartData} />;
 };
 
 export default DonutChart;

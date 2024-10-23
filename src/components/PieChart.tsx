@@ -5,25 +5,25 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 interface PieChartProps {
-  projects: Project[];
+  data: { labels: string[]; values: number[] };
+  label: string;
+  backgroundColor: string[];
 }
 
-const PieChart: React.FC<PieChartProps> = ({ projects }) => {
+const PieChart: React.FC<PieChartProps> = ({
+  data,
+  label,
+  backgroundColor,
+}) => {
   const chartRef = useRef<Chart | null>(null);
 
-  const procurementCounts = projects
-    .flatMap((project) => project.procurement)
-    .reduce((acc, item) => {
-      acc[item.status] = (acc[item.status] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-
-  const data = {
-    labels: Object.keys(procurementCounts),
+  const chartData = {
+    labels: data.labels,
     datasets: [
       {
-        data: Object.values(procurementCounts),
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        label,
+        data: data.values,
+        backgroundColor,
       },
     ],
   };
@@ -36,7 +36,7 @@ const PieChart: React.FC<PieChartProps> = ({ projects }) => {
     };
   }, []);
 
-  return <Pie ref={chartRef} data={data} />;
+  return <Pie ref={chartRef} data={chartData} />;
 };
 
 export default PieChart;
