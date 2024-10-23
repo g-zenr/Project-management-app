@@ -59,35 +59,50 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {/* Charts Grid Layout */}
-      <div className="charts mb-5 grid grid-cols-2 gap-4">
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold">
-            Budget Overview (Donut Chart)
-          </h2>
-          <DonutChart
-            totalBudget={totalBudget}
-            totalSpent={totalSpent}
-            remainingBudget={remainingBudget}
-          />
+      <div className="flex flex-col w-full">
+        {/* First row: Bar Graph and Pie Chart */}
+        <div className="flex w-full mb-8">
+          {" "}
+          {/* Increased margin-bottom for more space */}
+          <div className="w-[70%] h-97">
+            {" "}
+            <h2 className="text-lg font-semibold">Budget vs Actual Spend</h2>
+            <BarChart
+              totalBudget={totalBudget}
+              totalSpent={totalSpent}
+              procurementItems={allProcurementItems}
+            />
+          </div>
+          <div className="w-[30%] h-97">
+            {" "}
+            <h2 className="text-lg font-semibold">
+              Budget Overview (Donut Chart)
+            </h2>
+            <DonutChart
+              totalBudget={totalBudget}
+              totalSpent={totalSpent}
+              remainingBudget={remainingBudget}
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold">Project Status Distribution</h2>
-          <PieChart projects={projects} />
-        </div>
-
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold">Budget vs Actual Spend</h2>
-          <BarChart
-            totalBudget={totalBudget}
-            totalSpent={totalSpent}
-            procurementItems={allProcurementItems}
-          />
-        </div>
-
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold">Procurement Costs Over Time</h2>
-          <ProcurementLineChart procurementItems={allProcurementItems} />
+        {/* Second row: Bar Graph and Pie Chart */}
+        <div className="flex w-full">
+          <div className="w-[70%] h-97">
+            {" "}
+            {/* Increased height */}
+            <h2 className="text-lg font-semibold">
+              Procurement Costs Over Time
+            </h2>
+            <ProcurementLineChart procurementItems={allProcurementItems} />
+          </div>
+          <div className="w-[30%] h-97">
+            {" "}
+            <h2 className="text-lg font-semibold">
+              Project Progress Breakdown
+            </h2>
+            <PieChart projects={projects} />
+          </div>
         </div>
       </div>
     </div>

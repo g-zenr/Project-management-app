@@ -18,13 +18,14 @@ const MainLayout = () => {
     <div className="flex">
       <SideNavigation
         groupBehavior="multiple"
-        className="gap-10 bg-[#3f5992] text-white"
+        className="gap-10 bg-[#0f77be] text-white"
       >
         <SideNavigationContent />
       </SideNavigation>
 
       <div className="flex flex-col min-h-screen flex-1">
-        <TopNavigation />
+        {/* <TopNavigation /> */}
+        {/* Temp remove the top nav to make it little bit nicer*/}
 
         <div className="flex flex-col p-5 bg-[#fafafa] min-h-[calc(100%-4rem)]">
           <Outlet />
