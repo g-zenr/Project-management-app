@@ -3,6 +3,8 @@ import { SideNavigation } from "../components/navigation/SideNavigation";
 import { app } from "../config/app";
 import { TopNavigation } from "../components/navigation/TopNavigation";
 import { Outlet } from "react-router-dom";
+import logo from "../assets/uzaro.png";
+import logo1 from "../assets/uzaro1.png";
 
 type TNavigation = {
   key: string;
@@ -38,12 +40,15 @@ const MainLayout = () => {
 export const SideNavigationContent = () => {
   return (
     <>
-      <div className="flex py-4 self-center">
-        <h2>LOGO HERE</h2>
-      </div>
+      <div className="flex flex-col items-center">
+        <div className="py-4 self-center">
+          <img src={logo} alt="Logo" className="h-20" />
+        </div>
 
-      <div className="flex flex-col items-center h-full">
-        {app.navigation.map((navItem) => handleNavigation({ navItem }))}
+        <div className="flex flex-col items-center h-full mt-1">
+          {" "}
+          {app.navigation.map((navItem) => handleNavigation({ navItem }))}
+        </div>
       </div>
     </>
   );

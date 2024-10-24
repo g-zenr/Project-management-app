@@ -19,33 +19,24 @@ const DashboardPage: React.FC = () => {
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">
           Overall Project Overview
         </h2>
-
         <div className="grid grid-cols-4 gap-6">
-          <SummaryCard
-            title="Total Projects"
-            value={dashboardData.totalProjects}
-            bgColor="bg-white"
-          />
-          <SummaryCard
-            title="In Progress"
-            value={dashboardData.inProgress}
-            bgColor="bg-white"
-          />
-          <SummaryCard
-            title="Completed"
-            value={dashboardData.completed}
-            bgColor="bg-white"
-          />
-          <SummaryCard
-            title="Pending"
-            value={dashboardData.pending}
-            bgColor="bg-white"
-          />
+          {[
+            { title: "Total Projects", value: dashboardData.totalProjects },
+            { title: "In Progress", value: dashboardData.inProgress },
+            { title: "Completed", value: dashboardData.completed },
+            { title: "Pending", value: dashboardData.pending },
+          ].map((data, index) => (
+            <SummaryCard
+              key={index}
+              title={data.title}
+              value={data.value}
+              bgColor="bg-white"
+            />
+          ))}
         </div>
       </div>
 
       <div className="flex flex-col w-full">
-        {/* Top Row: Procurement Line Chart and Donut Chart */}
         <div className="flex w-full mb-10 gap-10">
           <div className="w-[70%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
@@ -77,7 +68,6 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Row: Bar Chart and Pie Chart */}
         <div className="flex w-full gap-10">
           <div className="w-[70%] h-97 bg-white border border-gray-300 rounded shadow-md p-4 flex flex-col items-center justify-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
